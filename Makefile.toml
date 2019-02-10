@@ -1,0 +1,36 @@
+[tasks.test-stable]
+command = "cargo"
+args = ["test"]
+
+[tasks.readme]
+install_crate = "readme"
+command = "cargo"
+args = ["readme", "-o", "README.md"]
+
+[tasks.fmt]
+command = "cargo"
+args = ["fmt"]
+
+[tasks.clippy]
+command = "cargo"
+args = ["clippy"]
+
+[tasks.doc-katex]
+env = { "RUSTDOCFLAGS" = "--html-in-header katex-header.html" }
+command = "cargo"
+args = ["doc", "--no-deps"]
+
+[tasks.doc-all]
+dependencies = [
+    "docs",
+    "doc-katex",
+]
+
+[tasks.all]
+dependencies = [
+    "test-stable",
+    "clippy",
+    "fmt",
+    "readme",
+    "doc-all",
+]
