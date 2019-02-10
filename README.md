@@ -1,4 +1,4 @@
-# hmmm
+# 🤔 hmmm 🤔
 
 This library contains a Rust implementation of a time-invariant Hidden Markov model with
 discrete observations. It includes maximum likelihood estimation via the Baum-Welch
