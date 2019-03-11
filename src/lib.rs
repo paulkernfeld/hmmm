@@ -904,35 +904,35 @@ mod tests {
 
     #[test]
     fn ll_given_states_empty() {
-        assert_eq!(0.0, HMM_UNIT.ll_given_states(&[], &[]))
+        assert!((0.0 - HMM_UNIT.ll_given_states(&[], &[])).abs() < f64::EPSILON)
     }
 
     #[test]
     fn ll_given_states_one() {
-        assert_eq!(0.0, HMM_UNIT.ll_given_states(&[0], &[0]))
+        assert!((0.0 -  HMM_UNIT.ll_given_states(&[0], &[0])).abs() < f64::EPSILON)
     }
 
     #[test]
     fn ll_given_states_certain() {
-        assert_eq!(0.0, HMM_PERIODIC.ll_given_states(&[0, 1, 0], &[1, 0, 1]))
+        assert!((0.0 - HMM_PERIODIC.ll_given_states(&[0, 1, 0], &[1, 0, 1])).abs() < f64::EPSILON)
     }
 
     #[test]
     fn ll_given_states_impossible_initial_state() {
-        assert_eq!(f64::NEG_INFINITY, HMM_PERIODIC.ll_given_states(&[1], &[0]))
+        let r = HMM_PERIODIC.ll_given_states(&[1], &[0]);
+        assert!(r.is_infinite() & r.is_sign_negative())
     }
 
     #[test]
     fn ll_given_states_impossible_transition() {
-        assert_eq!(
-            f64::NEG_INFINITY,
-            HMM_PERIODIC.ll_given_states(&[0, 0], &[1, 1])
-        )
+        let r = HMM_PERIODIC.ll_given_states(&[0, 0], &[1, 1]);
+        assert!(r.is_infinite() & r.is_sign_negative())
     }
 
     #[test]
     fn ll_given_states_impossible_observation() {
-        assert_eq!(f64::NEG_INFINITY, HMM_PERIODIC.ll_given_states(&[0], &[0]))
+        let r = HMM_PERIODIC.ll_given_states(&[0], &[0]);
+        assert!(r.is_infinite() & r.is_sign_negative())
     }
 
     #[test]
