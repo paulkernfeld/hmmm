@@ -52,6 +52,9 @@ use rand::XorShiftRng;
 use spectral::prelude::*;
 use std::f64;
 
+#[cfg(feature = "serde-1")]
+use serde::{Deserialize, Serialize};
+
 const TOLERANCE: f64 = 1e-5; // Chosen completely arbitrarily
 
 /// This struct represents a trained HMM, including values for each parameter.
@@ -72,6 +75,7 @@ const TOLERANCE: f64 = 1e-5; // Chosen completely arbitrarily
 /// * $B$, the $N × K$ observation matrix: $b_{ik}=P(Y_t=y_k|X_t=i)$
 /// * $π$, the $N$-length initial state distribution: $π_i=P(X_1=i)$
 #[derive(Debug)]
+#[cfg_attr(feature = "serde-1", derive(Serialize, Deserialize))]
 pub struct HMM {
     pub a: Array2<f64>,
     pub b: Array2<f64>,
@@ -909,7 +913,7 @@ mod tests {
 
     #[test]
     fn ll_given_states_one() {
-        assert!((0.0 -  HMM_UNIT.ll_given_states(&[0], &[0])).abs() < f64::EPSILON)
+        assert!((0.0 - HMM_UNIT.ll_given_states(&[0], &[0])).abs() < f64::EPSILON)
     }
 
     #[test]
@@ -1254,6 +1258,23 @@ mod tests {
             HMM_FANCY.most_likely_sequence(&ys),
             most_likely_sequence_sampled(&HMM_FANCY, &ys, 10000)
         );
+    }
+}
+
+#[cfg(all(test, feature = "serde-1"))]
+mod serde_test {
+    use super::*;
+
+    #[test]
+    fn test_serde() {
+        let HMM_UNIT: HMM = { HMM::new(array![[1.0]], array![[1.0]], array![1.0]) };
+
+        let deser = serde_json::to_string(&HMM_UNIT).unwrap();
+        let ser: HMM = serde_json::from_str(&deser).unwrap();
+
+        assert_eq!(HMM_UNIT.a, ser.a);
+        assert_eq!(HMM_UNIT.b, ser.b);
+        assert_eq!(HMM_UNIT.pi, ser.pi);
     }
 }
 
