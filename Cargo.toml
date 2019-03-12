@@ -17,14 +17,22 @@ num-traits = "0.2"
 rand = "0.5"
 spectral = "0.6"
 
+serde = { version = "1", optional = true }
+
 [dev-dependencies]
 counter = "0.4"
+serde_json = "1"
 
 [profile.dev]
 opt-level = 3  # Otherwise the tests run too slow
 
 [features]
 benchmark = []  # Benchmarking requires nightly
+
+serde-1 = [
+    "serde/derive", # enable serde_derive
+    "ndarray/serde-1" # reexport sered-1 to ndarray for serialization
+]
 
 [package.metadata.docs.rs]
 rustdoc-args = ["--html-in-header", "katex-header.html"]
