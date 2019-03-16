@@ -1,4 +1,6 @@
 #![cfg_attr(feature = "benchmark", feature(test))]
+//! Hidden Markov Models in Rust.
+//!
 //! This library contains a Rust implementation of a time-invariant Hidden Markov model with
 //! discrete observations. It includes maximum likelihood estimation via the Baum-Welch
 //! expectation-maximization algorithm and hidden state inference via the Viterbi algorithm.
