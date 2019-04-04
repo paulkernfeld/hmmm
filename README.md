@@ -6,7 +6,7 @@ This library contains a Rust implementation of a time-invariant Hidden Markov mo
 discrete observations. It includes maximum likelihood estimation via the Baum-Welch
 expectation-maximization algorithm and hidden state inference via the Viterbi algorithm.
 
-See [`hmmm::HMM`](struct.HMM.html) for detailed documentation on how to work with this library.
+See `hmmm::HMM` for detailed documentation on how to work with this library.
 
 Below, the HMM is trained to recognize the pattern `001001001...`
 
