@@ -42,12 +42,13 @@
 #[cfg(feature = "benchmark")]
 extern crate test;
 
-use self::ndarray_utils::*;
+use crate::ndarray_utils::{Array1Float as _, Array1FloatMut as _, Array2FloatMut as _};
 use itertools::Itertools;
-use ndarray::prelude::*;
-use ndarray::{array, s};
-use rand::prelude::*;
-use spectral::prelude::*;
+use ndarray::{array, s, Array1, Array2};
+use rand::distributions::Distribution;
+use rand::Rng;
+use spectral::numeric::{FloatAssertions, OrderedAssertions};
+use spectral::{assert_that, asserting};
 
 #[cfg(feature = "serde-1")]
 use serde::{Deserialize, Serialize};
@@ -630,12 +631,15 @@ impl Distribution<usize> for WeightedChoiceFloat {
 /// strong.
 #[cfg(test)]
 fn new_rng() -> impl Rng {
+    use rand::SeedableRng as _;
     rand::rngs::StdRng::seed_from_u64(1337)
 }
 
 #[cfg(test)]
 mod tests_weighted_choice_float {
-    use super::*;
+    use crate::new_rng;
+    use crate::WeightedChoiceFloat;
+    use rand::distributions::Distribution;
 
     #[test]
     fn unit() {
@@ -664,8 +668,7 @@ mod tests_weighted_choice_float {
 
 mod ndarray_utils {
     use itertools::Itertools;
-    use ndarray::prelude::*;
-    use ndarray::*;
+    use ndarray::{ArrayBase, Data, DataMut, Dimension, Ix1, Ix2};
     use num_traits::{Float, Num, Zero};
 
     pub trait ArrayFloat<T: Float> {
@@ -788,10 +791,16 @@ mod ndarray_utils {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use counter::Counter;
-    use lazy_static::lazy_static;
+    use crate::ndarray_utils::{Array2FloatMut as _, ArrayFloat as _};
+    use crate::{new_rng, HMMFilterItem, HMMSample, HMM};
     use core::iter::repeat_with;
+    use counter::Counter;
+    use itertools::Itertools;
+    use lazy_static::lazy_static;
+    use ndarray::{array, Array1, Array2};
+    use rand::Rng;
+    use spectral::assert_that;
+    use spectral::numeric::OrderedAssertions;
 
     lazy_static! {
         static ref HMM_UNIT: HMM = HMM::new(array![[1.0]], array![[1.0]], array![1.0]);
@@ -1262,7 +1271,8 @@ mod tests {
 
 #[cfg(all(test, feature = "serde-1"))]
 mod serde_test {
-    use super::*;
+    use crate::HMM;
+    use ndarray::array;
 
     #[test]
     fn test_serde() {
@@ -1281,7 +1291,7 @@ mod serde_test {
 mod benchmark {
     #[bench]
     fn bench(b: &mut test::Bencher) {
-        use crate::*;
+        use crate::{new_rng, HMM};
 
         let mut rng = new_rng();
         let observations = [0, 1].iter().cycle().take(1001).cloned().collect();
