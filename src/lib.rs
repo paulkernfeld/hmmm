@@ -48,7 +48,6 @@ use ndarray::prelude::*;
 use ndarray::{array, s};
 use rand::prelude::*;
 use spectral::prelude::*;
-use std::f64;
 
 #[cfg(feature = "serde-1")]
 use serde::{Deserialize, Serialize};
@@ -187,7 +186,7 @@ impl HMM {
     /// use the observations from the future to better inform the probability of being in each
     /// hidden state at any particular time t.
     ///
-    /// This is not closely related to the meaning of "filter" as in `std::iter::Iterator::filter`.
+    /// This is not closely related to the meaning of "filter" as in `core::iter::Iterator::filter`.
     ///
     /// Panics if an observation is out of bounds.
     pub fn filter<I>(&self, ys: I) -> HMMFilterIter<I::IntoIter>
@@ -792,7 +791,7 @@ mod tests {
     use super::*;
     use counter::Counter;
     use lazy_static::lazy_static;
-    use std::iter::repeat_with;
+    use core::iter::repeat_with;
 
     lazy_static! {
         static ref HMM_UNIT: HMM = HMM::new(array![[1.0]], array![[1.0]], array![1.0]);
@@ -940,7 +939,7 @@ mod tests {
     fn filter_empty() {
         assert_eq!(
             Vec::<HMMFilterItem>::new(),
-            HMM_FANCY.filter(std::iter::empty()).collect_vec()
+            HMM_FANCY.filter(core::iter::empty()).collect_vec()
         )
     }
 
