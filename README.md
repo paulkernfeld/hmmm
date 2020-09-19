@@ -13,10 +13,10 @@ Below, the HMM is trained to recognize the pattern `001001001...`
 ```rust
 use hmmm::HMM;
 use ndarray::{array, Array1};
-use rand::{SeedableRng, XorShiftRng};
+use rand::SeedableRng as _;
 
 let training_ys = array![0, 0, 1, 0, 0, 1, 0];
-let mut rng = XorShiftRng::seed_from_u64(1337);
+let mut rng = rand::rngs::StdRng::seed_from_u64(1337);
 let hmm = HMM::train(&training_ys, 3, 2, &mut rng);
 let sampled_ys: Array1<usize> = hmm.sampler(&mut rng)
     .map(|sample| sample.y)

@@ -10,18 +10,18 @@ repository = "https://github.com/paulkernfeld/hmmm"
 edition = "2018"
 
 [dependencies]
-itertools = "0.8"
-lazy_static = "1"
-ndarray = "0.12"
-num-traits = "0.2"
-rand = "0.5"
-spectral = "0.6"
+itertools = "0.9.0"
+lazy_static = "1.4.0"
+ndarray = "0.13.1"
+num-traits = "0.2.12"
+rand = "0.7.3"
+spectral = "0.6.0"
 
-serde = { version = "1", optional = true }
+serde = { version = "1.0.116", optional = true }
 
 [dev-dependencies]
-counter = "0.4"
-serde_json = "1"
+counter = "0.5.2"
+serde_json = "1.0.57"
 
 [profile.dev]
 opt-level = 3  # Otherwise the tests run too slow

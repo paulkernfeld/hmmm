@@ -12,10 +12,10 @@
 //! ```
 //! use hmmm::HMM;
 //! use ndarray::{array, Array1};
-//! use rand::{SeedableRng, XorShiftRng};
+//! use rand::SeedableRng as _;
 //!
 //! let training_ys = array![0, 0, 1, 0, 0, 1, 0];
-//! let mut rng = XorShiftRng::seed_from_u64(1337);
+//! let mut rng = rand::rngs::StdRng::seed_from_u64(1337);
 //! let hmm = HMM::train(&training_ys, 3, 2, &mut rng);
 //! let sampled_ys: Array1<usize> = hmm.sampler(&mut rng)
 //!     .map(|sample| sample.y)
@@ -47,8 +47,6 @@ use itertools::Itertools;
 use ndarray::prelude::*;
 use ndarray::{array, s};
 use rand::prelude::*;
-#[cfg(test)]
-use rand::XorShiftRng;
 use spectral::prelude::*;
 use std::f64;
 
@@ -94,18 +92,18 @@ impl HMM {
         // Check all dimensions
         {
             asserting("B must have a positive number of rows")
-                .that(&b.rows())
+                .that(&b.nrows())
                 .is_greater_than(0);
             asserting("B must have a positive number of columns")
-                .that(&b.cols())
+                .that(&b.ncols())
                 .is_greater_than(0);
             assert_eq!(
-                a.rows(),
-                b.rows(),
+                a.nrows(),
+                b.nrows(),
                 "A and B must have the same number of rows"
             );
-            assert_eq!(a.rows(), a.cols(), "A must be square");
-            assert_eq!(a.rows(), pi.len(), "π must be of length N");
+            assert_eq!(a.nrows(), a.ncols(), "A must be square");
+            assert_eq!(a.nrows(), pi.len(), "π must be of length N");
         }
 
         // Check that each row of A is a distribution
@@ -149,12 +147,12 @@ impl HMM {
 
     /// $N$, the number of states in this HMM
     pub fn n(&self) -> usize {
-        self.b.rows()
+        self.b.nrows()
     }
 
     /// $K$, the number of possible observations that this model can emit
     pub fn k(&self) -> usize {
-        self.b.cols()
+        self.b.ncols()
     }
 
     pub fn sampler<'a, R: Rng + ?Sized>(&'a self, rng: &'a mut R) -> HMMSampleIter<R> {
@@ -633,7 +631,7 @@ impl Distribution<usize> for WeightedChoiceFloat {
 /// strong.
 #[cfg(test)]
 fn new_rng() -> impl Rng {
-    XorShiftRng::seed_from_u64(1337)
+    rand::rngs::StdRng::seed_from_u64(1337)
 }
 
 #[cfg(test)]
@@ -1217,7 +1215,10 @@ mod tests {
     #[test]
     fn test_viterbi_empty() {
         let ys = array![];
-        assert_eq!(HMM_FANCY.most_likely_sequence(&ys), array![]);
+        assert_eq!(
+            HMM_FANCY.most_likely_sequence(&ys),
+            Array1::<usize>::zeros(0)
+        );
     }
 
     #[test]
