@@ -1266,26 +1266,25 @@ mod serde_test {
 
     #[test]
     fn test_serde() {
-        let HMM_UNIT: HMM = { HMM::new(array![[1.0]], array![[1.0]], array![1.0]) };
+        let hmm_unit: HMM = { HMM::new(array![[1.0]], array![[1.0]], array![1.0]) };
 
-        let deser = serde_json::to_string(&HMM_UNIT).unwrap();
+        let deser = serde_json::to_string(&hmm_unit).unwrap();
         let ser: HMM = serde_json::from_str(&deser).unwrap();
 
-        assert_eq!(HMM_UNIT.a, ser.a);
-        assert_eq!(HMM_UNIT.b, ser.b);
-        assert_eq!(HMM_UNIT.pi, ser.pi);
+        assert_eq!(hmm_unit.a, ser.a);
+        assert_eq!(hmm_unit.b, ser.b);
+        assert_eq!(hmm_unit.pi, ser.pi);
     }
 }
 
 #[cfg(feature = "benchmark")]
 mod benchmark {
-    use crate::*;
-    use test::Bencher;
-
     #[bench]
-    fn bench(b: &mut Bencher) {
+    fn bench(b: &mut test::Bencher) {
+        use crate::*;
+
         let mut rng = new_rng();
-        let observations = [0, 1].into_iter().cycle().take(1001).cloned().collect();
+        let observations = [0, 1].iter().cycle().take(1001).cloned().collect();
         b.iter(|| {
             HMM::train(&observations, 1, 2, &mut rng);
         });
