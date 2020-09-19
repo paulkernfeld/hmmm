@@ -797,7 +797,7 @@ mod tests {
     use std::iter::repeat_with;
 
     lazy_static! {
-        static ref HMM_UNIT: HMM = { HMM::new(array![[1.0]], array![[1.0]], array![1.0]) };
+        static ref HMM_UNIT: HMM = HMM::new(array![[1.0]], array![[1.0]], array![1.0]);
     }
 
     lazy_static! {
@@ -810,43 +810,43 @@ mod tests {
         };
     }
 
-    /// A hand-calculated table of paths where each path is equally likely.
-    ///
-    /// 1 time step (state only)
-    /// 0
-    /// 2
-    ///
-    /// 1 time step (state + observation)
-    /// 0/0
-    /// 2/1
-    ///
-    /// 2 time steps (states only)
-    /// 0, 0
-    /// 0, 1
-    /// 0, 2
-    /// 0, 2
-    /// 2, 0
-    /// 2, 1
-    /// 2, 1
-    /// 2, 2
-    ///
-    /// 2 time steps (states + observations)
-    /// 0/0, 0/0
-    /// 0/0, 0/0
-    /// 0/0, 1/0
-    /// 0/0, 1/1
-    /// 0/0, 2/1
-    /// 0/0, 2/1
-    /// 0/0, 2/1
-    /// 0/0, 2/1
-    /// 2/1, 0/0
-    /// 2/1, 0/0
-    /// 2/1, 1/0
-    /// 2/1, 1/0
-    /// 2/1, 1/1
-    /// 2/1, 1/1
-    /// 2/1, 2/1
-    /// 2/1, 2/1
+    // A hand-calculated table of paths where each path is equally likely.
+    //
+    // 1 time step (state only)
+    // 0
+    // 2
+    //
+    // 1 time step (state + observation)
+    // 0/0
+    // 2/1
+    //
+    // 2 time steps (states only)
+    // 0, 0
+    // 0, 1
+    // 0, 2
+    // 0, 2
+    // 2, 0
+    // 2, 1
+    // 2, 1
+    // 2, 2
+    //
+    // 2 time steps (states + observations)
+    // 0/0, 0/0
+    // 0/0, 0/0
+    // 0/0, 1/0
+    // 0/0, 1/1
+    // 0/0, 2/1
+    // 0/0, 2/1
+    // 0/0, 2/1
+    // 0/0, 2/1
+    // 2/1, 0/0
+    // 2/1, 0/0
+    // 2/1, 1/0
+    // 2/1, 1/0
+    // 2/1, 1/1
+    // 2/1, 1/1
+    // 2/1, 2/1
+    // 2/1, 2/1
     lazy_static! {
         static ref HMM_FANCY: HMM = {
             HMM::new(
@@ -857,28 +857,27 @@ mod tests {
         };
     }
 
-    /// 1 time step (state + observation)
-    /// 0/0
-    /// 0/0
-    /// 0/1
-    /// 0/1
-    /// 1/0
-    /// 1/0
-    /// 1/0
-    /// 1/1
-    ///
-    /// 2 time steps (states only)
-    /// 0, 0
-    /// 0, 1
-    /// 0, 1
-    /// 0, 1
-    /// 1, 0
-    /// 1, 0
-    /// 1, 1
-    /// 1, 1
-    ///
-    /// 2 time steps (states + observations)
-
+    // 1 time step (state + observation)
+    // 0/0
+    // 0/0
+    // 0/1
+    // 0/1
+    // 1/0
+    // 1/0
+    // 1/0
+    // 1/1
+    //
+    // 2 time steps (states only)
+    // 0, 0
+    // 0, 1
+    // 0, 1
+    // 0, 1
+    // 1, 0
+    // 1, 0
+    // 1, 1
+    // 1, 1
+    //
+    // 2 time steps (states + observations)
     lazy_static! {
         static ref HMM_COOL: HMM = {
             HMM::new(
