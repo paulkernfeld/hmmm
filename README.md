@@ -15,16 +15,14 @@ use hmmm::HMM;
 use ndarray::{array, Array1};
 use rand::{SeedableRng, XorShiftRng};
 
-fn main() {
-    let training_ys = array![0, 0, 1, 0, 0, 1, 0];
-    let mut rng = XorShiftRng::seed_from_u64(1337);
-    let hmm = HMM::train(&training_ys, 3, 2, &mut rng);
-    let sampled_ys: Array1<usize> = hmm.sampler(&mut rng)
-        .map(|sample| sample.y)
-        .take(10)
-        .collect();
-    assert_eq!(array![0, 0, 1, 0, 0, 1, 0, 0, 1, 0], sampled_ys);
-}
+let training_ys = array![0, 0, 1, 0, 0, 1, 0];
+let mut rng = XorShiftRng::seed_from_u64(1337);
+let hmm = HMM::train(&training_ys, 3, 2, &mut rng);
+let sampled_ys: Array1<usize> = hmm.sampler(&mut rng)
+    .map(|sample| sample.y)
+    .take(10)
+    .collect();
+assert_eq!(array![0, 0, 1, 0, 0, 1, 0, 0, 1, 0], sampled_ys);
 ```
 
 ### Building
