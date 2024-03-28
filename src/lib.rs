@@ -88,6 +88,7 @@ impl HMM {
     /// Panics if any of:
     /// - Dimensions are invalid
     /// - Probability distributions are invalid
+    #[must_use]
     pub fn new(a: Array2<f64>, b: Array2<f64>, pi: Array1<f64>) -> Self {
         // Check all dimensions
         {
@@ -146,11 +147,13 @@ impl HMM {
     }
 
     /// $N$, the number of states in this HMM
+    #[must_use]
     pub fn n(&self) -> usize {
         self.b.nrows()
     }
 
     /// $K$, the number of possible observations that this model can emit
+    #[must_use]
     pub fn k(&self) -> usize {
         self.b.ncols()
     }
@@ -211,6 +214,7 @@ impl HMM {
     /// Panics if:
     /// - The length of `p_states` is invalid
     /// - `p_states` is not probability distribution
+    #[must_use]
     pub fn predict(&self, mut p_states: Array1<f64>, n_time_steps: usize) -> Array1<f64> {
         asserting("p_states must sum to 1")
             .that(&p_states.sum())
@@ -254,6 +258,7 @@ impl HMM {
     /// time t.
     ///
     /// This is the forward-backward algorithm.
+    #[must_use]
     pub fn smooth(&self, ys: &Array1<usize>) -> Array2<f64> {
         // Forwards: given observations up to and including t, what is the probability that we are
         // in each state at time t?
@@ -283,6 +288,7 @@ impl HMM {
     /// It's possible to do this in log space but I normalized instead to make it feel more like the
     /// forwards-backwards algorithm.
     ///
+    #[must_use]
     pub fn most_likely_sequence(&self, ys: &Array1<usize>) -> Array1<usize> {
         // Special-case when the sequence of observations is empty
         if ys.is_empty() {
@@ -490,6 +496,7 @@ impl HMM {
     /// Panics if:
     /// - The number of states and observations is not equal
     /// - A state or observation is out of bounds
+    #[must_use]
     pub fn ll_given_states(&self, xs: &[usize], ys: &[usize]) -> f64 {
         assert_eq!(xs.len(), ys.len());
 
@@ -602,6 +609,7 @@ pub struct WeightedChoiceFloat {
 }
 
 impl WeightedChoiceFloat {
+    #[must_use]
     pub fn from_pmf(pmf: &[f64]) -> Self {
         let cmf = pmf
             .iter()
