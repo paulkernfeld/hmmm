@@ -2,6 +2,11 @@
 description = "Nightly is required for --all-features b/c it uses benchmarking"
 args = ["test"]
 
+[tasks.benchmark]
+condition = { channels = ["nightly"] }
+command = "cargo"
+args = ["test", "--all-features"]
+
 [tasks.readme]
 install_crate = "cargo-readme"
 command = "cargo"
@@ -21,6 +26,7 @@ dependencies = [
 [tasks.all]
 dependencies = [
     "test",
+    "benchmark",
     "clippy",
     "format",
     "readme",
