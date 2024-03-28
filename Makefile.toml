@@ -1,5 +1,5 @@
 [tasks.readme]
-install_crate = "readme"
+install_crate = "cargo-readme"
 command = "cargo"
 args = ["readme", "-o", "README.md"]
 
