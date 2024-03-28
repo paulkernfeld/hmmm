@@ -747,10 +747,7 @@ mod ndarray_utils {
     {
         fn nip(&mut self, label: &'static str) {
             let sum: f64 = self.sum();
-            assert!(
-                sum.is_sign_positive(),
-                format!("Sum of {} must be positive", label)
-            );
+            assert!(sum.is_sign_positive(), "Sum of {} must be positive", label);
             (*self) /= sum;
         }
 
