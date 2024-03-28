@@ -1,3 +1,7 @@
+[tasks.test]
+description = "Nightly is required for --all-features b/c it uses benchmarking"
+args = ["test"]
+
 [tasks.readme]
 install_crate = "cargo-readme"
 command = "cargo"
