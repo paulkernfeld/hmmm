@@ -261,7 +261,7 @@ impl HMM {
 
         // Backwards: given observations after (not including) time t, what is the probability that
         // we are in each state at time t?
-        let backwards = self.filter_backwards(&ys);
+        let backwards = self.filter_backwards(ys);
 
         // Construct the result as an Array1 of length $T * N$, then reshape it it into an array of
         // shape $T × N$.
@@ -304,7 +304,7 @@ impl HMM {
 
         for t in 1..ys.len() {
             let y = ys[t];
-            asserting("y is too big").that(&y).is_less_than(&self.k());
+            asserting("y is too big").that(&y).is_less_than(self.k());
             for i in 0..self.n() {
                 for j in 0..self.n() {
                     let prob_i_j = probs[(t - 1, i)] * self.a[(i, j)] * self.b[(j, y)];
@@ -401,7 +401,7 @@ impl HMM {
                     .map(|alpha| alpha.p_states)
                     .collect_vec();
                 let betas: Vec<Array1<f64>> =
-                    hmm.filter_backwards(&ys).into_iter().rev().collect_vec();
+                    hmm.filter_backwards(ys).into_iter().rev().collect_vec();
                 let gammas: Vec<Array1<f64>> = alphas
                     .iter()
                     .zip(betas.iter())
